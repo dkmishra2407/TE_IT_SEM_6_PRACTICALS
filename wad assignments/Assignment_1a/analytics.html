@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+
+            <ul class="list-unstyled">
+                <li>
+                    <a href="index.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="users.html"><i class="bi bi-people"></i> Users</a>
+                </li>
+                <li>
+                    <a href="products.html"><i class="bi bi-cart3"></i> Products</a>
+                </li>
+                <li class="active">
+                    <a href="analytics.html"><i class="bi bi-graph-up"></i> Analytics</a>
+                </li>
+                <li>
+                    <a href="settings.html"><i class="bi bi-gear"></i> Settings</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="ms-auto">
+                        <div class="user-info">
+                            <i class="bi bi-person-circle"></i>
+                            <span>Admin User</span>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Analytics Content -->
+            <div class="container-fluid">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h2>Analytics Overview</h2>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Sales Overview</h5>
+                                <canvas id="salesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">User Growth</h5>
+                                <canvas id="userChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Top Products</h5>
+                                <canvas id="productsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Revenue by Category</h5>
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sales Chart
+        new Chart(document.getElementById('salesChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Sales ($)',
+                    data: [12000, 19000, 15000, 25000, 22000, 30000],
+                    borderColor: '#007bff',
+                    tension: 0.1
+                }]
+            }
+        });
+
+        // User Growth Chart
+        new Chart(document.getElementById('userChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'New Users',
+                    data: [50, 75, 60, 90, 80, 110],
+                    backgroundColor: '#28a745'
+                }]
+            }
+        });
+
+        // Top Products Chart
+        new Chart(document.getElementById('productsChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Smartphone X', 'Laptop Pro', 'Smart Watch', 'Tablet Mini'],
+                datasets: [{
+                    data: [30, 25, 20, 25],
+                    backgroundColor: ['#007bff', '#28a745', '#ffc107', '#17a2b8']
+                }]
+            }
+        });
+
+        // Revenue by Category Chart
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Electronics', 'Accessories', 'Software', 'Services'],
+                datasets: [{
+                    data: [40, 20, 25, 15],
+                    backgroundColor: ['#dc3545', '#fd7e14', '#20c997', '#6f42c1']
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

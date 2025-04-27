@@ -1,0 +1,77 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card" style="background-color: #f8f9fa; font-family: 'Poppins', sans-serif; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <div class="card-header" style="background-color: #4a6fa5; color: white; border-radius: 10px 10px 0 0;">
+          <h3 class="text-center" style="font-weight: 600; margin: 10px 0;">Register</h3>
+        </div>
+        <div class="card-body" style="padding: 25px;">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="username" class="form-label" style="font-weight: 500; color: #333;">Username</label>
+              <input type="text" class="form-control" id="username" formControlName="username" style="border: 1px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #fff;">
+              <div class="text-danger" style="color: #dc3545; font-size: 0.85rem; margin-top: 5px;" *ngIf="registerForm.get('username')?.errors?.['required'] && registerForm.get('username')?.touched">
+                Username is required
+              </div>
+              <div class="text-danger" style="color: #dc3545; font-size: 0.85rem; margin-top: 5px;" *ngIf="registerForm.get('username')?.errors?.['minlength']">
+                Username must be at least 3 characters
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="email" class="form-label" style="font-weight: 500; color: #333;">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email" style="border: 1px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #fff;">
+              <div class="text-danger" style="color: #dc3545; font-size: 0.85rem; margin-top: 5px;" *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">
+                Email is required
+              </div>
+              <div class="text-danger" style="color: #dc3545; font-size: 0.85rem; margin-top: 5px;" *ngIf="registerForm.get('email')?.errors?.['email']">
+                Please enter a valid email
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label" style="font-weight: 500; color: #333;">Password</label>
+              <input type="password" class="form-control" id="password" formControlName="password" style="border: 1px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #fff;">
+              <div class="text-danger" style="color: #dc3545; font-size: 0.85rem; margin-top: 5px;" *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">
+                Password is required
+              </div>
+              <div class="text-danger" style="color: #dc3545; font-size: 0.85rem; margin-top: 5px;" *ngIf="registerForm.get('password')?.errors?.['minlength']">
+                Password must be at least 6 characters
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="firstName" class="form-label" style="font-weight: 500; color: #333;">First Name</label>
+              <input type="text" class="form-control" id="firstName" formControlName="firstName" style="border: 1px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #fff;">
+            </div>
+
+            <div class="mb-3">
+              <label for="lastName" class="form-label" style="font-weight: 500; color: #333;">Last Name</label>
+              <input type="text" class="form-control" id="lastName" formControlName="lastName" style="border: 1px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #fff;">
+            </div>
+
+            <div class="mb-3">
+              <label for="phone" class="form-label" style="font-weight: 500; color: #333;">Phone</label>
+              <input type="tel" class="form-control" id="phone" formControlName="phone" style="border: 1px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #fff;">
+            </div>
+
+            <div class="mb-3">
+              <label for="address" class="form-label" style="font-weight: 500; color: #333;">Address</label>
+              <textarea class="form-control" id="address" formControlName="address" style="border: 1px solid #ced4da; border-radius: 5px; padding: 10px; background-color: #fff; min-height: 80px;"></textarea>
+            </div>
+
+            <div class="text-danger mb-3" style="color: #dc3545; font-size: 0.9rem; margin-top: 5px;" *ngIf="error">
+              {{ error }}
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn" [disabled]="!registerForm.valid" style="background-color: #4a6fa5; color: white; padding: 10px; border: none; border-radius: 5px; font-weight: 500; transition: all 0.3s ease;">
+                Register
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wanderlust Travel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- jQuery Mobile CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.css" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css" />
+    <!-- Custom CSS -->
+    <style>
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            color: #3388cc;
+        }
+        
+        .ui-content {
+            padding: 15px;
+        }
+        
+        .destination-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: #3388cc;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .contact-form {
+            margin-top: 20px;
+        }
+        
+        .team-member {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .team-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+
+        .nav-bar{
+            color: black;
+            display: flex;
+            justify-content: space-between; 
+            text-decoration: none;
+        }
+        .nav-list ul{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            list-style: none;
+            margin-right: 50px;
+            margin-top: 20px;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Home Page -->
+    <div data-role="page" id="home">
+        <div data-role="header" data-position="fixed" class="nav-bar">
+            <div class="logo">Wanderlust Travel</div>
+            <div data-role="navbar" class="nav-list">
+                <ul>
+                    <li><a href="#home" class="ui-btn-active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div role="main" class="ui-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Discover Amazing Destinations</h2>
+                        <p>Find your next adventure with our curated selection of breathtaking locations around the world.</p>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div data-role="collapsibleset">
+                            <div data-role="collapsible" data-collapsed="false">
+                                <h3>Featured Destinations</h3>
+                                <div class="row">
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <img src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFsaXxlbnwwfHwwfHx8MA%3D%3D" alt="Bali" class="destination-img" />
+                                        <h4>Bali, Indonesia</h4>
+                                        <p>Experience the perfect blend of stunning beaches, rich culture and lush landscapes.</p>
+                                        <a href="#" data-role="button" data-mini="true">Learn More</a>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <img src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFsaXxlbnwwfHwwfHx8MA%3D%3D" alt="Santorini" class="destination-img" />
+                                        <h4>Santorini, Greece</h4>
+                                        <p>Discover the white-washed buildings, blue domes and breathtaking sunsets.</p>
+                                        <a href="#" data-role="button" data-mini="true">Learn More</a>
+                                    </div>
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <img src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFsaXxlbnwwfHwwfHx8MA%3D%3D" alt="Kyoto" class="destination-img" />
+                                        <h4>Kyoto, Japan</h4>
+                                        <p>Immerse yourself in traditional Japanese culture, temples and beautiful gardens.</p>
+                                        <a href="#" data-role="button" data-mini="true">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div data-role="collapsible">
+                                <h3>Why Choose Us?</h3>
+                                <div class="row text-center mt-3">
+                                    <div class="col-4">
+                                        <div class="feature-icon">✈️</div>
+                                        <h4>Best Prices</h4>
+                                        <p>Guaranteed lowest rates</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-icon">🏨</div>
+                                        <h4>Top Hotels</h4>
+                                        <p>Quality accommodations</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="feature-icon">🔒</div>
+                                        <h4>Safe Booking</h4>
+                                        <p>Secure transactions</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div data-role="collapsible">
+                                <h3>Customer Reviews</h3>
+                                <div data-role="listview">
+                                    <li>
+                                        <h4>Amazing Experience!</h4>
+                                        <p>Our trip to Bali was perfectly organized. Will definitely book again!</p>
+                                        <p class="ui-li-aside"><strong>★★★★★</strong></p>
+                                    </li>
+                                    <li>
+                                        <h4>Great Service</h4>
+                                        <p>The customer support was excellent throughout our vacation planning.</p>
+                                        <p class="ui-li-aside"><strong>★★★★☆</strong></p>
+                                    </li>
+                                    <li>
+                                        <h4>Unforgettable Journey</h4>
+                                        <p>Our tour guide in Greece made all the difference. Highly recommended!</p>
+                                        <p class="ui-li-aside"><strong>★★★★★</strong></p>
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- About Page -->
+    <div data-role="page" id="about">
+        
+        <div role="main" class="ui-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>About Wanderlust Travel</h2>
+                        <p>Founded in 2010, Wanderlust Travel has been helping travelers discover the world's most beautiful destinations with personalized service and exceptional experiences.</p>
+                        
+                        <h3 class="mt-4">Our Mission</h3>
+                        <p>We believe travel should be transformative. Our mission is to create meaningful connections between travelers and destinations, supporting local communities while providing unforgettable experiences.</p>
+                        
+                        <h3 class="mt-4">Our Team</h3>
+                        <div class="row mt-3">
+                            <div class="col-6 col-md-4 team-member">
+                                <img src="WhatsApp Image 2025-03-30 at 22.32.07_bd1c8a27.jpg" alt="Team Member" class="team-img" />
+                                <h4>Devansh Mishra</h4>
+                                <p>Founder & CEO</p>
+                            </div>
+                            <div class="col-6 col-md-4 team-member">
+                                <img src="WhatsApp Image 2025-03-30 at 22.32.07_bd1c8a27.jpg" alt="Team Member" class="team-img" />
+                                <h4>Devansh Mishra</h4>
+                                <p>Travel Expert</p>
+                            </div>
+                            <div class="col-6 col-md-4 team-member">
+                                <img src="image.png" alt="Team Member" class="team-img" />
+                                <h4>R patil</h4>
+                                <p>Customer Relations</p>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-4">Sustainable Travel</h3>
+                        <p>We are committed to responsible tourism practices that minimize environmental impact and support local economies. All our tours follow sustainable guidelines and we partner with eco-friendly accommodations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Contact Page -->
+    <div data-role="page" id="contact">
+        
+
+        <div role="main" class="ui-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Contact Us</h2>
+                        <p>Have questions or ready to plan your next adventure? Get in touch with our travel experts!</p>
+                        
+                        <div data-role="collapsibleset" class="mt-3">
+                            <div data-role="collapsible" data-collapsed="false">
+                                <h3>Contact Information</h3>
+                                <ul data-role="listview">
+                                    <li><i class="fa fa-map-marker"></i> 123 Travel Street, Adventure City, AC 12345</li>
+                                    <li><i class="fa fa-phone"></i> +1 (555) 123-4567</li>
+                                    <li><i class="fa fa-envelope"></i> info@wanderlusttravel.com</li>
+                                    <li><i class="fa fa-clock-o"></i> Monday-Friday: 9AM-6PM, Saturday: 10AM-4PM</li>
+                                </ul>
+                            </div>
+                            
+                            <div data-role="collapsible">
+                                <h3>Send Us a Message</h3>
+                                <form class="contact-form">
+                                    <div class="form-group">
+                                        <label for="name">Name:</label>
+                                        <input type="text" name="name" id="name" placeholder="Your Name" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" name="email" id="email" placeholder="Your Email" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subject">Subject:</label>
+                                        <input type="text" name="subject" id="subject" placeholder="Subject" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message">Message:</label>
+                                        <textarea name="message" id="message" placeholder="Your Message"></textarea>
+                                    </div>
+                                    <button type="submit" class="ui-btn ui-corner-all">Send Message</button>
+                                </form>
+                            </div>
+                            
+                            <div data-role="collapsible">
+                                <h3>Quick Inquiry</h3>
+                                <div data-role="controlgroup">
+                                    <legend>I'm interested in:</legend>
+                                    <input type="radio" name="inquiry" id="radio-beach" value="beach" />
+                                    <label for="radio-beach">Beach Vacations</label>
+                                    <input type="radio" name="inquiry" id="radio-adventure" value="adventure" />
+                                    <label for="radio-adventure">Adventure Tours</label>
+                                    <input type="radio" name="inquiry" id="radio-city" value="city" />
+                                    <label for="radio-city">City Breaks</label>
+                                    <input type="radio" name="inquiry" id="radio-custom" value="custom" />
+                                    <label for="radio-custom">Custom Itineraries</label>
+                                </div>
+                                <button class="ui-btn ui-corner-all mt-3">Request Information</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="footer" data-position="fixed">
+            <div class="footer">
+                <p>© 2025 Wanderlust Travel. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery and jQuery Mobile -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.min.js"></script>
+</body>
+</html>
