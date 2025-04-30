@@ -1,0 +1,49 @@
+┌──(deva㉿deva)-[~]
+└─$ scp deva.txt ubantu@192.168.111.131:/home
+ssh: connect to host 192.168.111.131 port 22: Connection refused
+scp: Connection closed
+
+┌──(deva㉿deva)-[~]
+└─$ sudo apt update
+Notice: It seems that you don't have any APT data sources configured.
+Notice: You won't be able to update your system or install new packages.
+Notice: For more information, please refer to the online documentation at:
+Notice: https://www.kali.org/docs/general-use/kali-linux-sources-list-repositories/
+All packages are up to date.    
+
+┌──(deva㉿deva)-[~]
+└─$ sudo apt install openssh-server                                          
+openssh-server is already the newest version (1:9.9p1-3).
+openssh-server set to manually installed.
+Summary:
+  Upgrading: 0, Installing: 0, Removing: 0, Not Upgrading: 0
+
+┌──(deva㉿deva)-[~]
+└─$ sudo systemctl start ssh
+
+┌──(deva㉿deva)-[~]
+└─$ sudo systemctl enable ssh
+Synchronizing state of ssh.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable ssh
+Created symlink '/etc/systemd/system/sshd.service' -> '/usr/lib/systemd/system/ssh.service'.
+Created symlink '/etc/systemd/system/multi-user.target.wants/ssh.service' -> '/usr/lib/systemd/system/ssh.service'.
+
+┌──(deva㉿deva)-[~]
+└─$ sudo systemctl status ssh
+* ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; enabled; preset: d>
+     Active: active (running) since Wed 2025-04-30 17:21:44 IST; 39s ago
+ Invocation: 6bd0e19d40074c84bda023f6efda54c6
+       Docs: man:sshd(8)
+             man:sshd_config(5)
+   Main PID: 15836 (sshd)
+      Tasks: 1 (limit: 655)
+     Memory: 2.2M (peak: 2.6M)
+        CPU: 73ms
+     CGroup: /system.slice/ssh.service
+             `-15836 "sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startup>
+
+Apr 30 17:21:43 deva systemd[1]: Starting ssh.service - OpenBSD Secure Shell>
+Apr 30 17:21:44 deva sshd[15836]: Server listening on 0.0.0.0 port 22.
+Apr 30 17:21:44 deva systemd[1]: Started ssh.service - OpenBSD Secure Shell >
+Apr 30 17:21:44 deva sshd[15836]: Server listening on :: port 22.
