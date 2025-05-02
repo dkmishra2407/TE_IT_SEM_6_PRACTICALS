@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h2>Test File Upload</h2>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Upload File</button>
+    <div id="result"></div>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('result');
+            
+            if (!fileInput.files.length) {
+                resultDiv.textContent = 'Please select a file';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = async function(e) {
+                try {
+                    // Convert file to base64
+                    const base64Content = e.target.result.split(',')[1];
+
+                    // Upload file
+                    const uploadResponse = await fetch('https://c0ko53mu26.execute-api.ap-south-1.amazonaws.com/prod/file', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            fileName: file.name,
+                            fileContent: base64Content
+                        })
+                    });
+
+                    const uploadData = await uploadResponse.json();
+                    resultDiv.textContent = 'Upload Response: ' + JSON.stringify(uploadData, null, 2);
+
+                    // Save metadata
+                    const metadataResponse = await fetch('https://c0ko53mu26.execute-api.ap-south-1.amazonaws.com/prod/file', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            input_text: 'Test upload',
+                            input_file_path: uploadData.url
+                        })
+                    });
+
+                    const metadataData = await metadataResponse.json();
+                    resultDiv.textContent += '\n\nMetadata Response: ' + JSON.stringify(metadataData, null, 2);
+                } catch (error) {
+                    resultDiv.textContent = 'Error: ' + error.message;
+                }
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,626 @@
+// File structure:
+// - server.js (main entry point)
+// - db.js (MongoDB connection)
+// - routes/songRoutes.js (API routes)
+// - public/index.html (front-end interface)
+// - public/js/script.js (front-end JavaScript)
+
+// server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const songRoutes = require('./routes/songRoutes');
+const db = require('./db');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.use('/api/songs', songRoutes);
+
+// Connect to MongoDB and start server
+db.connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}).catch(err => {
+  console.error('Failed to connect to MongoDB:', err);
+  process.exit(1);
+});
+
+// db.js
+const mongoose = require('mongoose');
+
+const connectDB = async () => {
+  try {
+    // Connect to MongoDB
+    await mongoose.connect('mongodb://localhost:27017/music', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log('MongoDB connected successfully');
+    
+    // Create the song details collection if it doesn't exist
+    const collections = await mongoose.connection.db.listCollections({ name: 'songdetails' }).toArray();
+    if (collections.length === 0) {
+      console.log('Creating "songdetails" collection');
+      await mongoose.connection.db.createCollection('songdetails');
+    }
+    
+    return mongoose.connection;
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    throw err;
+  }
+};
+
+const disconnectDB = async () => {
+  try {
+    await mongoose.disconnect();
+    console.log('MongoDB disconnected');
+  } catch (err) {
+    console.error('Error disconnecting from MongoDB:', err);
+    throw err;
+  }
+};
+
+module.exports = { connectDB, disconnectDB };
+
+// models/Song.js
+const mongoose = require('mongoose');
+
+const songSchema = new mongoose.Schema({
+  Songname: { type: String, required: true },
+  Film: { type: String, required: true },
+  Music_director: { type: String, required: true },
+  singer: { type: String, required: true },
+  Actor: { type: String, default: '' },
+  Actress: { type: String, default: '' }
+});
+
+module.exports = mongoose.model('SongDetail', songSchema, 'songdetails');
+
+// routes/songRoutes.js
+const express = require('express');
+const router = express.Router();
+const Song = require('../models/Song');
+
+// Seed initial data if collection is empty
+router.get('/seed', async (req, res) => {
+  try {
+    const count = await Song.countDocuments();
+    
+    if (count === 0) {
+      const songs = [
+        {
+          Songname: 'Tum Hi Ho',
+          Film: 'Aashiqui 2',
+          Music_director: 'Mithoon',
+          singer: 'Arijit Singh'
+        },
+        {
+          Songname: 'Kesariya',
+          Film: 'Brahmastra',
+          Music_director: 'Pritam',
+          singer: 'Arijit Singh'
+        },
+        {
+          Songname: 'Channa Mereya',
+          Film: 'Ae Dil Hai Mushkil',
+          Music_director: 'Pritam',
+          singer: 'Arijit Singh'
+        },
+        {
+          Songname: 'Agar Tum Saath Ho',
+          Film: 'Tamasha',
+          Music_director: 'A.R. Rahman',
+          singer: 'Alka Yagnik'
+        },
+        {
+          Songname: 'Jhoome Jo Pathaan',
+          Film: 'Pathaan',
+          Music_director: 'Vishal-Shekhar',
+          singer: 'Arijit Singh'
+        }
+      ];
+      
+      await Song.insertMany(songs);
+      res.status(201).json({ message: '5 songs added successfully', songs });
+    } else {
+      res.status(200).json({ message: 'Songs already exist in the database' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get all songs
+router.get('/', async (req, res) => {
+  try {
+    const songs = await Song.find();
+    const count = songs.length;
+    res.status(200).json({ count, songs });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get songs by Music Director
+router.get('/music-director/:director', async (req, res) => {
+  try {
+    const songs = await Song.find({ Music_director: req.params.director });
+    res.status(200).json(songs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get songs by Music Director and Singer
+router.get('/music-director/:director/singer/:singer', async (req, res) => {
+  try {
+    const songs = await Song.find({ 
+      Music_director: req.params.director,
+      singer: req.params.singer
+    });
+    res.status(200).json(songs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get songs by Singer and Film
+router.get('/singer/:singer/film/:film', async (req, res) => {
+  try {
+    const songs = await Song.find({ 
+      singer: req.params.singer,
+      Film: req.params.film
+    });
+    res.status(200).json(songs);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Add a new song
+router.post('/', async (req, res) => {
+  try {
+    const newSong = new Song(req.body);
+    const savedSong = await newSong.save();
+    res.status(201).json(savedSong);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Update a song (add Actor and Actress)
+router.patch('/:id', async (req, res) => {
+  try {
+    const updatedSong = await Song.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    
+    if (!updatedSong) {
+      return res.status(404).json({ message: 'Song not found' });
+    }
+    
+    res.status(200).json(updatedSong);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// Delete a song
+router.delete('/:id', async (req, res) => {
+  try {
+    const song = await Song.findByIdAndDelete(req.params.id);
+    
+    if (!song) {
+      return res.status(404).json({ message: 'Song not found' });
+    }
+    
+    res.status(200).json({ message: 'Song deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+module.exports = router;
+
+// public/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Database</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .section { margin-bottom: 30px; }
+    .hidden { display: none; }
+    table { width: 100%; margin-top: 20px; }
+    th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
+    th { background-color: #f2f2f2; }
+    .form-group { margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="my-4">Music Database Application</h1>
+    
+    <div class="section">
+      <h2>Song List</h2>
+      <button id="seedButton" class="btn btn-primary mb-3">Seed Initial Data</button>
+      <p>Total count: <span id="songCount">0</span></p>
+      <div id="songTable" class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Song Name</th>
+              <th>Film Name</th>
+              <th>Music Director</th>
+              <th>Singer</th>
+              <th>Actor</th>
+              <th>Actress</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="songTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="section">
+          <h2>Add New Song</h2>
+          <form id="addSongForm">
+            <div class="form-group">
+              <label for="songName">Song Name</label>
+              <input type="text" class="form-control" id="songName" required>
+            </div>
+            <div class="form-group">
+              <label for="filmName">Film Name</label>
+              <input type="text" class="form-control" id="filmName" required>
+            </div>
+            <div class="form-group">
+              <label for="musicDirector">Music Director</label>
+              <input type="text" class="form-control" id="musicDirector" required>
+            </div>
+            <div class="form-group">
+              <label for="singer">Singer</label>
+              <input type="text" class="form-control" id="singer" required>
+            </div>
+            <div class="form-group">
+              <label for="actor">Actor (Optional)</label>
+              <input type="text" class="form-control" id="actor">
+            </div>
+            <div class="form-group">
+              <label for="actress">Actress (Optional)</label>
+              <input type="text" class="form-control" id="actress">
+            </div>
+            <button type="submit" class="btn btn-success">Add Song</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="section">
+          <h2>Filter Songs</h2>
+          <div class="mb-3">
+            <label for="musicDirectorFilter">By Music Director:</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="musicDirectorFilter">
+              <button class="btn btn-primary" id="filterByDirector">Filter</button>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label>By Music Director and Singer:</label>
+            <div class="input-group mb-2">
+              <input type="text" class="form-control" id="directorWithSingerFilter" placeholder="Music Director">
+            </div>
+            <div class="input-group">
+              <input type="text" class="form-control" id="singerWithDirectorFilter" placeholder="Singer">
+              <button class="btn btn-primary" id="filterByDirectorAndSinger">Filter</button>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label>By Singer and Film:</label>
+            <div class="input-group mb-2">
+              <input type="text" class="form-control" id="singerFilter" placeholder="Singer">
+            </div>
+            <div class="input-group">
+              <input type="text" class="form-control" id="filmFilter" placeholder="Film">
+              <button class="btn btn-primary" id="filterBySingerAndFilm">Filter</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>Update Song</h2>
+          <p>To update, first select a song from the table by clicking 'Update'</p>
+          <form id="updateSongForm" class="hidden">
+            <input type="hidden" id="updateSongId">
+            <div class="form-group">
+              <label for="updateActor">Actor</label>
+              <input type="text" class="form-control" id="updateActor" required>
+            </div>
+            <div class="form-group">
+              <label for="updateActress">Actress</label>
+              <input type="text" class="form-control" id="updateActress" required>
+            </div>
+            <button type="submit" class="btn btn-warning">Update Song</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section mt-4">
+      <h2>Filter Results</h2>
+      <div id="filterResultsTable" class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Song Name</th>
+              <th>Film Name</th>
+              <th>Music Director</th>
+              <th>Singer</th>
+              <th>Actor</th>
+              <th>Actress</th>
+            </tr>
+          </thead>
+          <tbody id="filterResultsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
+
+// public/js/script.js
+document.addEventListener('DOMContentLoaded', function() {
+  // Elements
+  const songTableBody = document.getElementById('songTableBody');
+  const songCount = document.getElementById('songCount');
+  const filterResultsBody = document.getElementById('filterResultsBody');
+  const seedButton = document.getElementById('seedButton');
+  const addSongForm = document.getElementById('addSongForm');
+  const updateSongForm = document.getElementById('updateSongForm');
+  
+  // Load all songs on page load
+  fetchAllSongs();
+  
+  // Event Listeners
+  seedButton.addEventListener('click', seedInitialData);
+  addSongForm.addEventListener('submit', addNewSong);
+  updateSongForm.addEventListener('submit', updateSong);
+  
+  document.getElementById('filterByDirector').addEventListener('click', filterByMusicDirector);
+  document.getElementById('filterByDirectorAndSinger').addEventListener('click', filterByDirectorAndSinger);
+  document.getElementById('filterBySingerAndFilm').addEventListener('click', filterBySingerAndFilm);
+  
+  // Fetch all songs
+  async function fetchAllSongs() {
+    try {
+      const response = await fetch('/api/songs');
+      const data = await response.json();
+      
+      songCount.textContent = data.count;
+      renderSongsTable(data.songs, songTableBody);
+    } catch (error) {
+      console.error('Error fetching songs:', error);
+      alert('Failed to fetch songs from the database');
+    }
+  }
+  
+  // Seed initial data
+  async function seedInitialData() {
+    try {
+      const response = await fetch('/api/songs/seed');
+      const data = await response.json();
+      
+      alert(data.message);
+      fetchAllSongs();
+    } catch (error) {
+      console.error('Error seeding data:', error);
+      alert('Failed to seed initial data');
+    }
+  }
+  
+  // Add new song
+  async function addNewSong(e) {
+    e.preventDefault();
+    
+    const newSong = {
+      Songname: document.getElementById('songName').value,
+      Film: document.getElementById('filmName').value,
+      Music_director: document.getElementById('musicDirector').value,
+      singer: document.getElementById('singer').value,
+      Actor: document.getElementById('actor').value || '',
+      Actress: document.getElementById('actress').value || ''
+    };
+    
+    try {
+      const response = await fetch('/api/songs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newSong)
+      });
+      
+      if (!response.ok) throw new Error('Failed to add song');
+      
+      alert('Song added successfully!');
+      addSongForm.reset();
+      fetchAllSongs();
+    } catch (error) {
+      console.error('Error adding song:', error);
+      alert('Failed to add song');
+    }
+  }
+  
+  // Filter by Music Director
+  async function filterByMusicDirector() {
+    const director = document.getElementById('musicDirectorFilter').value;
+    
+    if (!director) {
+      alert('Please enter a Music Director name');
+      return;
+    }
+    
+    try {
+      const response = await fetch(`/api/songs/music-director/${director}`);
+      const data = await response.json();
+      
+      renderSongsTable(data, filterResultsBody);
+    } catch (error) {
+      console.error('Error filtering by music director:', error);
+      alert('Failed to filter songs');
+    }
+  }
+  
+  // Filter by Music Director and Singer
+  async function filterByDirectorAndSinger() {
+    const director = document.getElementById('directorWithSingerFilter').value;
+    const singer = document.getElementById('singerWithDirectorFilter').value;
+    
+    if (!director || !singer) {
+      alert('Please enter both Music Director and Singer names');
+      return;
+    }
+    
+    try {
+      const response = await fetch(`/api/songs/music-director/${director}/singer/${singer}`);
+      const data = await response.json();
+      
+      renderSongsTable(data, filterResultsBody);
+    } catch (error) {
+      console.error('Error filtering by music director and singer:', error);
+      alert('Failed to filter songs');
+    }
+  }
+  
+  // Filter by Singer and Film
+  async function filterBySingerAndFilm() {
+    const singer = document.getElementById('singerFilter').value;
+    const film = document.getElementById('filmFilter').value;
+    
+    if (!singer || !film) {
+      alert('Please enter both Singer and Film names');
+      return;
+    }
+    
+    try {
+      const response = await fetch(`/api/songs/singer/${singer}/film/${film}`);
+      const data = await response.json();
+      
+      renderSongsTable(data, filterResultsBody);
+    } catch (error) {
+      console.error('Error filtering by singer and film:', error);
+      alert('Failed to filter songs');
+    }
+  }
+  
+  // Prepare song for update
+  function prepareSongForUpdate(songId) {
+    updateSongForm.classList.remove('hidden');
+    document.getElementById('updateSongId').value = songId;
+    
+    // You could pre-fill the form with existing values if needed
+    document.getElementById('updateSongForm').scrollIntoView({ behavior: 'smooth' });
+  }
+  
+  // Update song
+  async function updateSong(e) {
+    e.preventDefault();
+    
+    const songId = document.getElementById('updateSongId').value;
+    const updateData = {
+      Actor: document.getElementById('updateActor').value,
+      Actress: document.getElementById('updateActress').value
+    };
+    
+    try {
+      const response = await fetch(`/api/songs/${songId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
+      });
+      
+      if (!response.ok) throw new Error('Failed to update song');
+      
+      alert('Song updated successfully!');
+      updateSongForm.reset();
+      updateSongForm.classList.add('hidden');
+      fetchAllSongs();
+    } catch (error) {
+      console.error('Error updating song:', error);
+      alert('Failed to update song');
+    }
+  }
+  
+  // Delete song
+  async function deleteSong(songId) {
+    if (!confirm('Are you sure you want to delete this song?')) return;
+    
+    try {
+      const response = await fetch(`/api/songs/${songId}`, {
+        method: 'DELETE'
+      });
+      
+      if (!response.ok) throw new Error('Failed to delete song');
+      
+      alert('Song deleted successfully!');
+      fetchAllSongs();
+    } catch (error) {
+      console.error('Error deleting song:', error);
+      alert('Failed to delete song');
+    }
+  }
+  
+  // Render songs table
+  function renderSongsTable(songs, tableBody) {
+    tableBody.innerHTML = '';
+    
+    if (!songs || songs.length === 0) {
+      const row = document.createElement('tr');
+      row.innerHTML = '<td colspan="7">No songs found</td>';
+      tableBody.appendChild(row);
+      return;
+    }
+    
+    songs.forEach(song => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${song.Songname}</td>
+        <td>${song.Film}</td>
+        <td>${song.Music_director}</td>
+        <td>${song.singer}</td>
+        <td>${song.Actor || '-'}</td>
+        <td>${song.Actress || '-'}</td>
+        <td>
+          <button class="btn btn-sm btn-warning" onclick="prepareSongForUpdate('${song._id}')">Update</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteSong('${song._id}')">Delete</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+  
+  // Expose these functions globally for inline handlers
+  window.prepareSongForUpdate = prepareSongForUpdate;
+  window.deleteSong = deleteSong;
+});

@@ -1,0 +1,96 @@
+.logo {
+    display: block;
+    max-width: 200px;
+    margin: 20px auto;
+}
+
+.ui-header {
+    background: #003366 !important;
+    color: white !important;
+}
+
+.ui-header h1 {
+    color: white !important;
+}
+
+/* Navigation bar styling */
+.ui-navbar {
+    background: #004d99 !important;
+}
+
+.ui-navbar a {
+    color: white !important;
+}
+
+.ui-navbar .ui-btn-active {
+    background: #0066cc !important;
+}
+
+/* Content styling */
+.ui-content {
+    padding: 20px;
+}
+
+/* Collapsible styling */
+.ui-collapsible {
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.ui-collapsible-heading {
+    background: #f5f5f5 !important;
+}
+
+.ui-collapsible-heading-toggle {
+    color: #003366 !important;
+}
+
+/* List styling */
+.ui-listview {
+    margin: 0;
+}
+
+.ui-listview > li {
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+/* Footer styling */
+.ui-footer {
+    background: #003366 !important;
+    color: white !important;
+    text-align: center;
+}
+
+/* Page transitions */
+.ui-page {
+    background: #ffffff;
+}
+
+/* Button styling */
+.ui-btn {
+    background: #0066cc !important;
+    color: white !important;
+    border-radius: 5px;
+}
+
+.ui-btn:hover {
+    background: #004d99 !important;
+}
+
+/* Home icon styling */
+.ui-icon-home {
+    background-color: white !important;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 480px) {
+    .ui-header h1 {
+        font-size: 1.2em;
+    }
+    
+    .logo {
+        max-width: 150px;
+    }
+} 

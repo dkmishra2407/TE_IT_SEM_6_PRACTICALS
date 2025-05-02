@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+        .container{
+            background-color: white;
+            max-width: 1200px;
+            margin: 20;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th{
+            background-color: aqua;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Table of songs</h2>
+        <table id="songtable">
+            <thead>
+                <tr>
+                <th>Name</th>
+                <th>Film</th>
+                <th>Director</th>
+                </tr>
+            </thead>
+            <tbody id="songbody">
+
+            </tbody>
+        </table>
+
+        <script>
+            const fetchapi = async() => {
+                try{
+                    const response = await fetch('http://localhost:5000/api/all');
+                    const data = await response.json();  // Parse the JSON from the response
+                    const songs = data.data;             // Assuming your response JSON has a `data` field
+                    console.log(songs);
+                    const tablebody = document.getElementById('songbody');
+                    tablebody.innerHTML = ''
+
+                    songs.forEach(song => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${song.name}</td>
+                            <td>${song.film}</td>
+                            <td>${song.singer}</td>
+                        `
+                        tablebody.appendChild(row);
+                    });
+                }
+                catch(err){
+                    console.log(err)
+                    const tablebody = document.getElementById('songbody');
+                    tablebody.innerHTML = 'No Data to append'
+                }
+            }
+
+            window.onload = fetchapi;
+        </script>
+    </div>
+</body>
+</html>
