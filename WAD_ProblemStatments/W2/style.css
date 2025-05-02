@@ -1,0 +1,137 @@
+body{
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    margin:0 auto;
+    padding: 20px;
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    position: sticky;
+}
+
+ul{
+    list-style: none;
+    display: flex;
+    gap: 14px;
+}
+
+
+a{
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+footer{
+    text-align: center;
+    position: relative;
+    bottom: 0;
+}
+
+.intro{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.devaimg{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin: 20px;
+}
+
+.devaintro{
+    text-align: center;
+    margin: 20px;
+    padding-top: 30px;
+    font-size: xx-large;
+    font-weight: bold;
+    color: aqua;
+}
+
+.aboutdeva{
+    text-align: center;
+    padding: 30px;
+    font-size: large;
+    font-weight: bold;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: larger;
+}
+
+h1 , h2{
+    text-align: center;
+    color: #333;
+}
+
+.devaprojects{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding-right: 20px;
+}
+
+.projectimg{
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    margin: 20px;
+}
+
+.project1{
+    background-color: #ddd;
+    padding: 30px;
+    font-size: large;
+}
+
+h3{
+    text-align: center;
+    color: #333;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.demo-github{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+button{
+    width: 70px;
+    height: 40px;
+    font-size: large;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+input{
+    border: none;
+}
