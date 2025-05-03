@@ -1,0 +1,75 @@
+{
+    "london": {
+      "name": "London, UK",
+      "temp": 18,
+      "humidity": 75,
+      "wind": 5.2,
+      "condition": "Rainy"
+    },
+    "new york": {
+      "name": "New York, US",
+      "temp": 22,
+      "humidity": 65,
+      "wind": 4.5,
+      "condition": "Partly Cloudy"
+    },
+    "tokyo": {
+      "name": "Tokyo, JP",
+      "temp": 25,
+      "humidity": 70,
+      "wind": 3.8,
+      "condition": "Sunny"
+    },
+    "paris": {
+      "name": "Paris, FR",
+      "temp": 20,
+      "humidity": 60,
+      "wind": 4.1,
+      "condition": "Clear"
+    },
+    "sydney": {
+      "name": "Sydney, AU",
+      "temp": 27,
+      "humidity": 55,
+      "wind": 6.3,
+      "condition": "Sunny"
+    },
+    "dubai": {
+      "name": "Dubai, UAE",
+      "temp": 36,
+      "humidity": 45,
+      "wind": 5.5,
+      "condition": "Clear"
+    },
+    "moscow": {
+      "name": "Moscow, RU",
+      "temp": 12,
+      "humidity": 80,
+      "wind": 7.2,
+      "condition": "Cloudy"
+    },
+    "beijing": {
+      "name": "Beijing, CN",
+      "temp": 24,
+      "humidity": 58,
+      "wind": 4.8,
+      "condition": "Hazy"
+    },
+    "cairo": {
+      "name": "Cairo, EG",
+      "temp": 33,
+      "humidity": 40,
+      "wind": 5.9,
+      "condition": "Clear"
+    },
+    "rio": {
+      "name": "Rio de Janeiro, BR",
+      "temp": 30,
+      "humidity": 72,
+      "wind": 3.5,
+      "condition": "Partly Cloudy"
+    }
+  }
+
+
+  

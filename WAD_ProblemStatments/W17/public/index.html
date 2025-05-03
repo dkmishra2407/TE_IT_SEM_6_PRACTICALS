@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Directory</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Employee Directory</h1>
+        <div id="employee-grid" class="employee-grid">
+            <!-- Employee cards will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Fetch and display employee data
+        async function fetchEmployees() {
+            try {
+                const response = await fetch('http://localhost:3000/api/employees');
+                const data = await response.json();
+                displayEmployees(data.employees);
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+            }
+        }
+
+        // Display employees in the grid
+        function displayEmployees(employees) {
+            const grid = document.getElementById('employee-grid');
+            grid.innerHTML = employees.map(employee => `
+                <div class="employee-card">
+                    <img src="${employee.profileImage}" alt="${employee.name}" class="profile-image">
+                    <h2>${employee.name}</h2>
+                    <p class="designation">${employee.designation}</p>
+                    <p class="department">${employee.department}</p>
+                    <p class="salary">$${employee.salary.toLocaleString()}</p>
+                </div>
+            `).join('');
+        }
+
+        // Load employees when page loads
+        document.addEventListener('DOMContentLoaded', fetchEmployees);
+    </script>
+</body>
+</html> 

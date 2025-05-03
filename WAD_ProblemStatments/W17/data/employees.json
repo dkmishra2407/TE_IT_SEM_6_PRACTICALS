@@ -1,0 +1,36 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "designation": "Senior Software Engineer",
+      "department": "Engineering",
+      "salary": 120000,
+      "profileImage": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "designation": "Product Manager",
+      "department": "Product",
+      "salary": 130000,
+      "profileImage": "https://randomuser.me/api/portraits/women/1.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Mike Johnson",
+      "designation": "UX Designer",
+      "department": "Design",
+      "salary": 95000,
+      "profileImage": "https://randomuser.me/api/portraits/men/2.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Sarah Williams",
+      "designation": "HR Manager",
+      "department": "Human Resources",
+      "salary": 110000,
+      "profileImage": "https://randomuser.me/api/portraits/women/2.jpg"
+    }
+  ]
+} 
