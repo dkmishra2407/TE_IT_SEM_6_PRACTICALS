@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - Log In or Sign Up</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #1b2a5a;
+            padding: 10px 0;
+        }
+        .facebook-logo {
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        .login-form {
+            padding: 15px 0;
+        }
+        .main-content {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+        .network-image {
+            width: 100%;
+            max-width: 460px;
+        }
+        .signup-button {
+            background-color: #00a400;
+            color: white;
+            border: none;
+            padding: 8px 60px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .create-page {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #dddfe2;
+        }
+        .footer {
+            border-top: 1px solid #dddfe2;
+            padding-top: 10px;
+            color: #737373;
+            font-size: 12px;
+        }
+        .login-btn {
+            background-color: #1877f2;
+            font-weight: bold;
+        }
+        .form-control {
+            margin-bottom: 10px;
+        }
+        .forgot-password {
+            color: #1877f2;
+            text-decoration: none;
+        }
+        h1 {
+            color: #1b2a5a;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        h2 {
+            font-size: 24px;
+        }
+        .tagline {
+            font-size: 16px;
+            color: #1c1e21;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div class="facebook-logo ms-2">facebook</div>
+                </div>
+                <div class="col-md-6">
+                    <form class="login-form d-flex justify-content-end">
+                        <div class="me-2">
+                            <label class="text-white mb-1">Email or Username</label>
+                            <input type="text" class="form-control form-control-sm" placeholder="Email">
+                        </div>
+                        <div class="me-2">
+                            <label class="text-white mb-1">Password</label>
+                            <input type="password" class="form-control form-control-sm" placeholder="Password">
+                        </div>
+                        <div class="d-flex flex-column justify-content-end mb-1">
+                            <button class="btn btn-light btn-sm">login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <div class="d-flex justify-content-start ms-2">
+                        <div class="form-check me-2">
+                            <input class="form-check-input" type="checkbox" id="keepLoggedIn">
+                            <label class="form-check-label text-white" for="keepLoggedIn">
+                                Keep me logged in
+                            </label>
+                        </div>
+                        <div>
+                            <a href="#" class="text-white">Forgotten my password!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <div class="main-content">
+        <div class="container">
+            <div class="row">
+                <!-- Left side content -->
+                <div class="col-md-6">
+                    <h1 class="mb-3">Facebook is useless without friends.<br>Make More Friends.</h1>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Facebook helps you connect and share with the people in your life.</h5>
+                            <p>interesting, engaging, fun, like-able content</p>
+                            <img src="/api/placeholder/460/320" alt="Network of people" class="network-image">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right side content - Sign up form -->
+                <div class="col-md-6 p-10">
+                    <h2 class="mb-1">Create an Account</h2>
+                    <p class="tagline mb-4">It's free and always will be.</p>
+                    
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Firstname">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Lastname">
+                            </div>
+                        </div>
+                        
+                        <input type="email" class="form-control mb-3" placeholder="Email">
+                        <input type="email" class="form-control mb-3" placeholder="Re-enter email">
+                        <input type="password" class="form-control mb-3" placeholder="Password">
+                        
+                        <div class="mb-3">
+                            <input type="text" class="form-control" placeholder="dd/mm/yyyy">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="male">
+                                <label class="form-check-label" for="male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="gender" id="female">
+                                <label class="form-check-label" for="female">Female</label>
+                            </div>
+                        </div>
+                        
+                        <p>By clicking create an account, you agree to our Terms.</p>
+                        
+                        <button type="submit" class="signup-button">Signup</button>
+                        
+                        <div class="create-page">
+                            <a href="#">Create a page for you.</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p>English UK...</p>
+                    <p>Learn more...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

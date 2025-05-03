@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mugs - Online Shop</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        .badge-bestseller {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #f8e7c9;
+            color: #b68834;
+            font-weight: 500;
+            border: none;
+        }
+        
+        .badge-new {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #e7f2f8;
+            color: #4a90c9;
+            font-weight: 500;
+            border: none;
+        }
+        
+        .card-img-top {
+            height: 200px;
+            object-fit: contain;
+            padding: 20px;
+        }
+        
+        .filter-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .form-check-label {
+            cursor: pointer;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: #f8f9fa;
+            color: #212529;
+            box-shadow: none;
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+        }
+        
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .price-original {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .price-printify {
+            font-size: 0.9rem;
+            color: #28a745;
+        }
+        
+        .product-details {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Mugs</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h1 class="mb-2">Mugs</h1>
+                <p class="text-muted">Mugs and glasses sell great as gifts for friends and loved ones on special occasions. Choose from many different sizes and styles to sell online.</p>
+            </div>
+            <div class="col-md-4 d-flex justify-content-end align-items-center">
+                <div class="d-flex align-items-center">
+                    <label for="sortBy" class="me-2">Sort by</label>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Popularity
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                            <li><a class="dropdown-item active" href="#">Popularity</a></li>
+                            <li><a class="dropdown-item" href="#">Price: Low to High</a></li>
+                            <li><a class="dropdown-item" href="#">Price: High to Low</a></li>
+                            <li><a class="dropdown-item" href="#">Newest</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Filters Column -->
+            <div class="col-lg-3 mb-4">
+                <div class="accordion" id="filtersAccordion">
+                    <!-- Target Market Filter -->
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="headingMarket">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMarket" aria-expanded="true" aria-controls="collapseMarket">
+                                Target Market
+                                <span class="badge bg-success ms-2">New</span>
+                            </button>
+                        </h2>
+                        <div id="collapseMarket" class="accordion-collapse collapse show" aria-labelledby="headingMarket">
+                            <div class="accordion-body bg-light py-3">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="market-usa">
+                                    <label class="form-check-label" for="market-usa">USA</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="market-canada">
+                                    <label class="form-check-label" for="market-canada">Canada</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="market-uk">
+                                    <label class="form-check-label" for="market-uk">United Kingdom</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="market-europe">
+                                    <label class="form-check-label" for="market-europe">Europe</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="market-australia">
+                                    <label class="form-check-label" for="market-australia">Australia/NZ</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="market-china">
+                                    <label class="form-check-label" for="market-china">China</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="market-other">
+                                    <label class="form-check-label" for="market-other">Other</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Print Area Filter -->
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="headingPrintArea">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePrintArea" aria-expanded="false" aria-controls="collapsePrintArea">
+                                Print area
+                            </button>
+                        </h2>
+                        <div id="collapsePrintArea" class="accordion-collapse collapse" aria-labelledby="headingPrintArea">
+                            <div class="accordion-body bg-light py-3">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="print-all">
+                                    <label class="form-check-label" for="print-all">All areas</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="print-over">
+                                    <label class="form-check-label" for="print-over">All over print</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="print-front">
+                                    <label class="form-check-label" for="print-front">Front side</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="print-wraparound">
+                                    <label class="form-check-label" for="print-wraparound">Wraparound exterior</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Print Providers Filter -->
+                    <div class="accordion-item border-0">
+                        <h2 class="accordion-header" id="headingProviders">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProviders" aria-expanded="false" aria-controls="collapseProviders">
+                                Print providers
+                            </button>
+                        </h2>
+                        <div id="collapseProviders" class="accordion-collapse collapse" aria-labelledby="headingProviders">
+                            <div class="accordion-body bg-light py-3">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="provider-artsadd">
+                                    <label class="form-check-label" for="provider-artsadd">ArtsAdd</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="provider-colorway">
+                                    <label class="form-check-label" for="provider-colorway">Colorway</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="provider-district">
+                                    <label class="form-check-label" for="provider-district">District Photo</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="provider-duplium">
+                                    <label class="form-check-label" for="provider-duplium">Duplium</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Clear Filters Button -->
+                <button class="btn btn-outline-secondary w-100 mt-3">Clear Filters</button>
+            </div>
+            
+            <!-- Products Column -->
+            <div class="col-lg-9">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <!-- Product 1 -->
+                    <div class="col">
+                        <div class="card h-100 position-relative">
+                            <span class="badge badge-bestseller px-2 py-1">Bestseller</span>
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Ceramic Mug 11oz">
+                            <div class="card-body">
+                                <h5 class="card-title">Ceramic Mug 11oz</h5>
+                                <p class="card-text mb-1"><small>By Generic brand</small></p>
+                                <p class="mb-1 price-original">From USD 4.40</p>
+                                <p class="mb-2 price-printify">From USD 3.39 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">1 size</span>
+                                    <span>District Photo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="col">
+                        <div class="card h-100 position-relative">
+                            <span class="badge badge-bestseller px-2 py-1">Bestseller</span>
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Accent Coffee Mug">
+                            <div class="card-body">
+                                <h5 class="card-title">Accent Coffee Mug, 11oz</h5>
+                                <p class="card-text mb-1"><small>By Generic brand</small></p>
+                                <p class="mb-1 price-original">From USD 5.52</p>
+                                <p class="mb-2 price-printify">From USD 4.25 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">1 size</span>
+                                    <span class="me-3">5 colors</span>
+                                    <span>District Photo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Ceramic Mug 15oz">
+                            <div class="card-body">
+                                <h5 class="card-title">Ceramic Mug 15oz</h5>
+                                <p class="card-text mb-1"><small>By Generic brand</small></p>
+                                <p class="mb-1 price-original">From USD 5.66</p>
+                                <p class="mb-2 price-printify">From USD 4.36 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">1 size</span>
+                                    <span>District Photo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 4 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="White Ceramic Mug">
+                            <div class="card-body">
+                                <h5 class="card-title">White Ceramic Mug</h5>
+                                <p class="card-text mb-1"><small>By ORCA Coatings</small></p>
+                                <p class="mb-1 price-original">From USD 6.88</p>
+                                <p class="mb-2 price-printify">From USD 5.30 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">2 sizes</span>
+                                    <span>MyLocker</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 5 -->
+                    <div class="col">
+                        <div class="card h-100 position-relative">
+                            <span class="badge badge-new px-2 py-1">New</span>
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Black Ceramic Mug">
+                            <div class="card-body">
+                                <h5 class="card-title">Black Ceramic Mug 11oz</h5>
+                                <p class="card-text mb-1"><small>By Generic brand</small></p>
+                                <p class="mb-1 price-original">From USD 5.99</p>
+                                <p class="mb-2 price-printify">From USD 4.62 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">1 size</span>
+                                    <span>District Photo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 6 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Accent Coffee Mug">
+                            <div class="card-body">
+                                <h5 class="card-title">Accent Coffee Mug, 11oz (Multi-color)</h5>
+                                <p class="card-text mb-1"><small>By Generic brand</small></p>
+                                <p class="mb-1 price-original">From USD 5.79</p>
+                                <p class="mb-2 price-printify">From USD 4.46 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">1 size</span>
+                                    <span class="me-3">5 colors</span>
+                                    <span>District Photo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 7 -->
+                    <div class="col">
+                        <div class="card h-100 position-relative">
+                            <span class="badge badge-new px-2 py-1">New</span>
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Black Ceramic Mug 15oz">
+                            <div class="card-body">
+                                <h5 class="card-title">Black Ceramic Mug 15oz</h5>
+                                <p class="card-text mb-1"><small>By Generic brand</small></p>
+                                <p class="mb-1 price-original">From USD 6.40</p>
+                                <p class="mb-2 price-printify">From USD 4.93 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">1 size</span>
+                                    <span>District Photo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 8 -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="/api/placeholder/300/300" class="card-img-top" alt="Black Ceramic Mug">
+                            <div class="card-body">
+                                <h5 class="card-title">Black Ceramic Mug</h5>
+                                <p class="card-text mb-1"><small>By ORCA Coatings</small></p>
+                                <p class="mb-1 price-original">From USD 7.50</p>
+                                <p class="mb-2 price-printify">From USD 5.78 with Printify Premium</p>
+                                <div class="product-details d-flex">
+                                    <span class="me-3">2 sizes</span>
+                                    <span>MyLocker</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pagination -->
+                <nav aria-label="Product pagination" class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
