@@ -3,21 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List App</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>AJAX To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .todo-container {
+            margin-top: 20px;
+        }
+        .todo-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .todo-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
+        .add-btn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        .todo-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .todo-item:hover {
+            background-color: #f9f9f9;
+        }
+        .todo-text {
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .edit-btn, .delete-btn {
+            margin-left: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .edit-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Todo List</h1>
-        <div class="todo-input">
-            <input type="text" id="taskInput" placeholder="Add a new task...">
-            <button onclick="addTask()">Add Task</button>
-        </div>
-        <div class="todo-list" id="todoList">
-            <!-- Tasks will be dynamically added here -->
-        </div>
+    <h1>AJAX To-Do List</h1>
+    
+    <div class="todo-container">
+        <form class="todo-form" id="todo-form">
+            <input type="text" class="todo-input" id="todo-input" placeholder="Add a new task..." required>
+            <button type="submit" class="add-btn">Add</button>
+        </form>
+        
+        <ul class="todo-list" id="todo-list">
+            <!-- Todo items will be added here dynamically -->
+        </ul>
+        
+        <div id="status-message" class="status"></div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const todoForm = document.getElementById('todo-form');
+            const todoInput = document.getElementById('todo-input');
+            const todoList = document.getElementById('todo-list');
+            const statusMessage = document.getElementById('status-message');
+            
+            // API Endpoints (replace with your actual API endpoints)
+            const API_URL = {
+                GET: '/api/todos',
+                ADD: '/api/todos',
+                UPDATE: '/api/todos/', // + todo_id
+                DELETE: '/api/todos/'  // + todo_id
+            };
+            
+            // Show status message
+            function showStatus(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = 'status ' + type;
+                statusMessage.style.display = 'block';
+                
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Create AJAX request
+            function makeRequest(method, url, data, callback) {
+                const xhr = new XMLHttpRequest();
+                xhr.open(method, url, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                
+                xhr.onload = function() {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        callback(null, JSON.parse(xhr.responseText));
+                    } else {
+                        callback(xhr.statusText, null);
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    callback('Network error', null);
+                };
+                
+                if (data) {
+                    xhr.send(JSON.stringify(data));
+                } else {
+                    xhr.send();
+                }
+            }
+            
+            // Fetch all todos
+            function fetchTodos() {
+                makeRequest('GET', API_URL.GET, null, function(err, todos) {
+                    if (err) {
+                        showStatus('Failed to load tasks: ' + err, 'error');
+                        return;
+                    }
+                    
+                    renderTodos(todos);
+                });
+            }
+            
+            // Render todos in the list
+            function renderTodos(todos) {
+                todoList.innerHTML = '';
+                
+                todos.forEach(function(todo) {
+                    const li = document.createElement('li');
+                    li.className = 'todo-item';
+                    li.dataset.id = todo.id;
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.checked = todo.completed;
+                    checkbox.addEventListener('change', toggleCompleted);
+                    
+                    const span = document.createElement('span');
+                    span.className = 'todo-text' + (todo.completed ? ' completed' : '');
+                    span.textContent = todo.text;
+                    
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'edit-btn';
+                    editBtn.textContent = 'Edit';
+                    editBtn.addEventListener('click', editTodo);
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-btn';
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.addEventListener('click', deleteTodo);
+                    
+                    li.appendChild(checkbox);
+                    li.appendChild(span);
+                    li.appendChild(editBtn);
+                    li.appendChild(deleteBtn);
+                    
+                    todoList.appendChild(li);
+                });
+            }
+            
+            // Add a new todo
+            function addTodo(e) {
+                e.preventDefault();
+                
+                const text = todoInput.value.trim();
+                if (!text) return;
+                
+                const newTodo = {
+                    text: text,
+                    completed: false
+                };
+                
+                makeRequest('POST', API_URL.ADD, newTodo, function(err, response) {
+                    if (err) {
+                        showStatus('Failed to add task: ' + err, 'error');
+                        return;
+                    }
+                    
+                    todoInput.value = '';
+                    showStatus('Task added successfully!', 'success');
+                    fetchTodos(); // Refresh the list
+                });
+            }
+            
+            // Toggle todo completed status
+            function toggleCompleted(e) {
+                const li = e.target.closest('.todo-item');
+                const todoId = li.dataset.id;
+                const textSpan = li.querySelector('.todo-text');
+                const completed = e.target.checked;
+                
+                textSpan.classList.toggle('completed', completed);
+                
+                const updateData = {
+                    completed: completed
+                };
+                
+                makeRequest('PATCH', API_URL.UPDATE + todoId, updateData, function(err, response) {
+                    if (err) {
+                        showStatus('Failed to update task: ' + err, 'error');
+                        e.target.checked = !completed; // Revert UI change
+                        textSpan.classList.toggle('completed', !completed);
+                        return;
+                    }
+                    
+                    showStatus('Task updated successfully!', 'success');
+                });
+            }
+            
+            // Edit todo text
+            function editTodo(e) {
+                const li = e.target.closest('.todo-item');
+                const todoId = li.dataset.id;
+                const textSpan = li.querySelector('.todo-text');
+                const currentText = textSpan.textContent;
+                
+                const newText = prompt('Edit task:', currentText);
+                if (!newText || newText === currentText) return;
+                
+                const updateData = {
+                    text: newText
+                };
+                
+                makeRequest('PATCH', API_URL.UPDATE + todoId, updateData, function(err, response) {
+                    if (err) {
+                        showStatus('Failed to update task: ' + err, 'error');
+                        return;
+                    }
+                    
+                    textSpan.textContent = newText;
+                    showStatus('Task updated successfully!', 'success');
+                });
+            }
+            
+            // Delete todo
+            function deleteTodo(e) {
+                const li = e.target.closest('.todo-item');
+                const todoId = li.dataset.id;
+                
+                if (!confirm('Are you sure you want to delete this task?')) return;
+                
+                makeRequest('DELETE', API_URL.DELETE + todoId, null, function(err, response) {
+                    if (err) {
+                        showStatus('Failed to delete task: ' + err, 'error');
+                        return;
+                    }
+                    
+                    li.remove();
+                    showStatus('Task deleted successfully!', 'success');
+                });
+            }
+            
+            // Event Listeners
+            todoForm.addEventListener('submit', addTodo);
+            
+            // Initialize
+            fetchTodos();
+
+            // Since this is a demo without a real backend, let's simulate the server response
+            // This is only for demo purposes - your real app would use the above AJAX code
+            // Comment out this section when connecting to a real API
+            function simulateServer() {
+                // Mock data
+                let todos = [
+                    { id: 1, text: "Complete AJAX to-do list project", completed: false },
+                    { id: 2, text: "Learn more about JavaScript", completed: true },
+                    { id: 3, text: "Exercise for 30 minutes", completed: false }
+                ];
+                let nextId = 4;
+
+                // Override XMLHttpRequest
+                const originalXHR = window.XMLHttpRequest;
+                window.XMLHttpRequest = function() {
+                    const xhr = new originalXHR();
+                    xhr.open = function(method, url, async) {
+                        this.method = method;
+                        this.url = url;
+                        this._open = originalXHR.prototype.open;
+                        this._open.apply(this, arguments);
+                    };
+                    
+                    xhr.send = function(data) {
+                        let response;
+                        setTimeout(() => {
+                            // GET all todos
+                            if (this.method === 'GET' && this.url === API_URL.GET) {
+                                response = JSON.stringify(todos);
+                                this.status = 200;
+                            } 
+                            // POST new todo
+                            else if (this.method === 'POST' && this.url === API_URL.ADD) {
+                                const todo = JSON.parse(data);
+                                const newTodo = { id: nextId++, ...todo };
+                                todos.push(newTodo);
+                                response = JSON.stringify(newTodo);
+                                this.status = 201;
+                            } 
+                            // PATCH update todo
+                            else if (this.method === 'PATCH' && this.url.startsWith(API_URL.UPDATE)) {
+                                const id = parseInt(this.url.replace(API_URL.UPDATE, ''));
+                                const todoIndex = todos.findIndex(t => t.id === id);
+                                if (todoIndex !== -1) {
+                                    const updates = JSON.parse(data);
+                                    todos[todoIndex] = { ...todos[todoIndex], ...updates };
+                                    response = JSON.stringify(todos[todoIndex]);
+                                    this.status = 200;
+                                } else {
+                                    this.status = 404;
+                                    response = JSON.stringify({ error: "Todo not found" });
+                                }
+                            } 
+                            // DELETE todo
+                            else if (this.method === 'DELETE' && this.url.startsWith(API_URL.DELETE)) {
+                                const id = parseInt(this.url.replace(API_URL.DELETE, ''));
+                                const todoIndex = todos.findIndex(t => t.id === id);
+                                if (todoIndex !== -1) {
+                                    todos.splice(todoIndex, 1);
+                                    response = JSON.stringify({ success: true });
+                                    this.status = 200;
+                                } else {
+                                    this.status = 404;
+                                    response = JSON.stringify({ error: "Todo not found" });
+                                }
+                            } else {
+                                this.status = 404;
+                                response = JSON.stringify({ error: "Endpoint not found" });
+                            }
+                            
+                            // Simulate response
+                            if (this.onload) {
+                                this.responseText = response;
+                                this.onload();
+                            }
+                        }, 300); // Simulate network delay
+                    };
+                    
+                    return xhr;
+                };
+            }
+            
+            // Enable server simulation
+            simulateServer();
+        });
+    </script>
 </body>
-</html> 
+</html>

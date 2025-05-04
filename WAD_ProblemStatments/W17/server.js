@@ -9,7 +9,6 @@ const port = 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
 
 // API endpoint to get all employees
 app.get('/api/employees', (req, res) => {
